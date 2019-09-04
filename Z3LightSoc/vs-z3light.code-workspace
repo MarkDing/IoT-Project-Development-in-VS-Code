@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"af.h": "c",
+			"hal.h": "c",
+			"hal-config.h": "c"
+		}
+	}
+}
