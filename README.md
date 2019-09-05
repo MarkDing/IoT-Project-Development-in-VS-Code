@@ -62,7 +62,7 @@ $make -j8 -f Z3LightSoc.mak
 ![cmdlinebuild](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/cmdlinebuild.png)
 
 ### 4.4. Verify building result
-Find the binary files under **C:\Users\mading\SimplicityStudio\v4_workspace\Z3LightSoc\build\efr32\binary**. Use Simplicity Commander in Simplicity Studio to download the code into WSTK boad. The LED on board is blinking, that means everything work well.
+Find the binary files under **C:\Users\username\SimplicityStudio\v4_workspace\Z3LightSoc\build\efr32\binary**. Use Simplicity Commander in Simplicity Studio to download the code into WSTK boad. The LED on board is blinking, that means everything work well.
 
 ## 5. Develop Zigbee project in VS Code with configuration setup
 Now we need to figure out how develop the Zigbee project in VS Code. Several things are needed to do for a comfortable development environment.
@@ -186,7 +186,7 @@ $ git commit -m "Init commit"
 
 It takes a little longer time to finish the job due to the large size(2.4GB) of the SDK.
 
-### 6.2. Create Git repo for
+### 6.2. Create Git repo for Z3LightSoc
 Enter your workspace directory C:/Users/username/SimplicityStudio/v4_workspace/Z3LightSoc.  Remove all build output directories. Like "build" and "GNU ARM v7.2.1 - Default" directories,
 
 Type following command to create your Git repo to manage your workspace source code.
