@@ -227,7 +227,7 @@ The output message can be seen in the bash terminal.
 It takes 66 seconds to complete project build. Compare to 120 seconds in Simplicity Studio, the building speed is almost double quick than in Simplicity Studio.
 
 #### 5.3.4. Adding external programmer tool
-There is a Commander tool in Simplicity Studio to program binary code into the WSTK board.  It can run with GUI or command line. 
+There is a Commander tool in Simplicity Studio to program binary code into the WSTK board.  It can run in GUI or command line mode. 
 
 **Run Commander Tool in Command Line**
 
@@ -314,7 +314,7 @@ In VS Code, add a comment in Z3LightSoc_callbacks.c, then we can see on the side
 
 ![git-diff](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/git-diff.png)
 
-### 7. Have a fun with VS Code
+## 7. Have a fun with VS Code
 Now,  we have finished all setup on IoT development in VS Code, enjoy your time!
 
 ![vs-code](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/vs-code.png)
