@@ -8,17 +8,15 @@ Download [Simplicity Studio](https://www.silabs.com/documents/login/software/ins
 
 Press **WIN+Pause** key to open System setup. Click on the "Advance system settings", and then "Environment Variables".
 
-### 2.1. Adding a "ARM_GNU_DIR"
-This variable value should be your Simplicity Studio GNU arm tool chain directory
+### 2.1. Adding new variable "ARM_GNU_DIR"
+In User variableThis variable is your Simplicity Studio GNU arm tool chain directory. In default, it is "C:/SiliconLabs/SimplicityStudio/v4/developer/toolchains/gnu_arm/7.2_2017q4". This variable will be used in makefile. So be careful to use slash "/" instead of back slash "\\". Checking the snapshot on section 2.2. 
 
-![arm_gnu_dir](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/arm_gnu_dir.png)
-
-### 2.2. Adding msys 1.0 on the path environment variable
+### 2.2. Adding msys 1.0 directory
 The Simplicity Studio contains a msys 1.0 which can be used to build the project.  It is recommended to use this one, the msys2.0 from official website doesn't work well under Git bash terminal,  it converts several "spaces" into "return" on list of source code which eventually cause the build fail.
 
 Add **C:\SiliconLabs\SimplicityStudio\v4\support\common\build\msys\1.0\bin** on top of path.
 
-![msys1_path](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/msys1.0path.png)
+![env_var](./images/environment-variables.png)
 
 ## 3. Install VS Code and recommended extensions
 ### 3.1. Download and install [VS Code](https://code.visualstudio.com/) from official web site.
@@ -33,7 +31,7 @@ Install [Git](https://git-scm.com/download/win) from official website. Open VS c
 By default, the Simplicity Studio doesn't support command line build although it supports GNU compilers. The next generation Simplicity Studio is considering to add the command line support but we cannot wait for it. There is a makefile template file which can help to generate makefile of a project, but the makefile doesn't work with a lot of errors. Jim Lin did some works recently and made modification on the template file to make the command line build working. That is a very nice job since the command line build is an important part of this project. I just made a minor modifications to match the requirement of the VS Code.
 
 ### 4.1. Replace the makefile template.
-The makefile template is located at **C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.6\app\esf_common\template\efr32\efr32-afv2.mak**, make a backup of the file and replace it with attached modified the [template file](./template/efr32-afv2.mak).
+The makefile template is located at **C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.6\app\esf_common\template\efr32\efr32-afv2.mak**, make a backup of the file and replace it with attached modified the [template file](./files/efr32-afv2.mak).
 
 Here is the modification of the makefile template
 
@@ -70,9 +68,11 @@ Now we need to figure out how develop the Zigbee project in VS Code. Several thi
 
 ### 5.1. Create a workspace
 Open VS Code, open your Z3LightSoc from menu **File->Open Workspace**, and name your workspace from menu **File->Save Workspace As**.
-Press **Ctrl+P** to open Z3LightSoc_callback.c, press **F12** while moving cursor on top of include file, functions, macros, we can see it cannot find the definition.
+Press **Ctrl+P** to open Z3LightSoc_callback.c, press **F12** while moving cursor on top of include files, functions, macros, we can see it cannot find the definition.  
 
 ![fail-goto-definition](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/fail-goto-definition.png)
+
+On following section, we will show how to add all necessary information in VS Code setting to enable it to locate the include files, functions and macros.
 
 The makefile Z3LightSoc.mak contains all information we need. We can add those info in the VS Code configuration.  After completing the configuration, we will have two files in a .vscode sub-folder:
 
@@ -86,11 +86,44 @@ Press **Ctrl+Shift+P** to open the Command Palette, type "C/C++" and choose **Ed
 
 This open **c_cpp_properties.json** in **.vscode** folder. The detailed introduction on this file can be found at VS Code [docs web site](https://code.visualstudio.com/docs/cpp/c-cpp-properties-schema-reference).
 
+Please refer to the attached [c_cpp_properties.json](./files/c_cpp_properties.json) in details.
+
 We add env SDK_PATH, COMPILER_PATH,  browse. Set the name as VS-Z3Light, intelliSenseMode as gcc-x86, cStandard as C99.
 
 Note: We will add include path in "**includepath**"; add macro definition in "**defines**"; add all directories of source code in "**browse**".
 
-![c_cpp_properties1](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/c_cpp_properties1.png)
+```JSON
+{
+    "env": {
+        "SDK_PATH": "C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.6",
+        "COMPILER_PATH": "C:/SiliconLabs/SimplicityStudio/v4/developer/toolchains/gnu_arm/7.2_2017q4/lib/gcc/arm-none-eabi/7.2.1/include"
+    },
+    "configurations": [
+        {
+            "name": "VS-Z3Light",
+            "intelliSenseMode": "gcc-x86",
+            "compilerPath": "",
+            "cStandard": "c99",
+            "cppStandard": "c++14",
+            "includePath": [
+                "${COMPILER_PATH}/**",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
+```
 
 Press **Ctrl+P**, type "Z3LightSoc.mak" and open the Z3LightSoc.mak,
 
@@ -110,7 +143,7 @@ Copy all stuffs of **CDEFS** in Z3LightSoc.mak and paste them in "defines" field
 
 ![def-json](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/def-json.png)
 
-#### 5.2.3. Configure browse direcotry
+#### 5.2.3. Configure browse directory
 Get source code browse directories list.
 Press **Ctrl+`** to open git bash terminal, run "make -f Z3LightSoc.mak vs", it prints list of directories.
 
@@ -144,13 +177,46 @@ Next, create a tasks.json file to tell VS Code how to build the project.
 #### 5.3.1. Create build task
 Press **Ctrl+Shift+P**, type "task" and choose **Tasks: Configure Default Build Task**. In the drop-down, select Create tasks.json file from template, then choose Others. VS Code creates a minimal tasks.json file and opens it in the editor.
 
+Please refer to the attached [tasks.json](./files/tasks.json) in details.
+
+
 #### 5.3.2. Configure build task
 Go ahead and replace the entire file contents with the following code snippet:
 
-![build-task](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/build-task.png)
+```JSON
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "make -j8 -f Z3LightSoc.Mak",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "make clean -f Z3LightSoc.Mak",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
+```
 
 #### 5.3.3. Run build task
-Press **Alt+Shift+B**, it popup a drop-down, choose Clean to clean the project. And then choose Build to build the whole project. 
+Press **Alt+Shift+B**, it popup a drop-down, choose **Clean** to clean the project. And then choose **Build** to build the whole project. 
 
 ![dropdown-build-task](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/dropdown-build-task.png)
 
@@ -161,9 +227,55 @@ The output message can be seen in the bash terminal.
 It takes 66 seconds to complete project build. Compare to 120 seconds in Simplicity Studio, the building speed is almost double quick than in Simplicity Studio.
 
 #### 5.3.4. Adding external programmer tool
-There is commander in Simplicity Studio to program binary code into the WSTK board. Add following text in the tasks.json
+There is a Commander tool in Simplicity Studio to program binary code into the WSTK board.  It can run with GUI or command line. 
 
-![commander-json](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/commander-json.png)
+**Run Commander Tool in Command Line**
+
+This way works in seamless way with VS Code. It is recommended. 
+
+Press **CTRL+N**, open a new file, typing follow text in the file. Save as **flash.bat** under current workspace (C:\Users\username\SimplicityStudio\v4_workspace\Z3LightSoc).
+
+It searches hex file under current work space, and run commander.exe to flash the hex file into the WSTK board. 
+
+```bat
+@echo OFF
+for /f "delims=" %%i in ('dir /b /s /a-d *.hex') do (set filename=%%i)
+C:\SiliconLabs\SimplicityStudio\v4\developer\adapter_packs\commander\commander.exe flash "%filename%"
+```
+
+Add following text in the tasks.json
+
+```JSON
+{
+    "label": "Flash",
+    "type": "process",
+    "command": "flash.bat",
+    "group": {
+        "kind": "build",
+        "isDefault": true
+    },
+    "problemMatcher": []
+}
+```
+
+**Run Commander Tool with GUI**
+
+The user can run the commander tool in GUI mode if that makes more comfortable . 
+
+Add following text in the tasks.json
+
+```JSON
+{
+    "label": "Flash",
+    "type": "process",
+    "command": "C:/SiliconLabs/SimplicityStudio/v4/developer/adapter_packs/commander/commander.exe",
+    "group": {
+        "kind": "build",
+        "isDefault": true
+    },
+    "problemMatcher": []
+}
+```
 
 Press **Alt+Shift+B**, choose Flash from drop-down menu.
 
