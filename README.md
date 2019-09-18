@@ -8,10 +8,12 @@ Download [Simplicity Studio](https://www.silabs.com/documents/login/software/ins
 
 Press **WIN+Pause** key to open System setup. Click on the "Advance system settings", and then "Environment Variables".
 
-### 2.1. Adding new variable "ARM_GNU_DIR"
-In User variableThis variable is your Simplicity Studio GNU arm tool chain directory. In default, it is "C:/SiliconLabs/SimplicityStudio/v4/developer/toolchains/gnu_arm/7.2_2017q4". This variable will be used in makefile. So be careful to use slash "/" instead of back slash "\\". Checking the snapshot on section 2.2. 
+**Adding new variable "ARM_GNU_DIR"**
 
-### 2.2. Adding msys 1.0 directory
+In User variableThis variable is your Simplicity Studio GNU arm tool chain directory. In default, it is "C:/SiliconLabs/SimplicityStudio/v4/developer/toolchains/gnu_arm/7.2_2017q4". This variable will be used in makefile. So be careful to use slash "/" instead of back slash "\\". 
+
+**Adding msys path**
+
 The Simplicity Studio contains a msys 1.0 which can be used to build the project.  It is recommended to use this one, the msys2.0 from official website doesn't work well under Git bash terminal,  it converts several "spaces" into "return" on list of source code which eventually cause the build fail.
 
 Add **C:\SiliconLabs\SimplicityStudio\v4\support\common\build\msys\1.0\bin** on top of path.
@@ -257,6 +259,24 @@ Add following text in the tasks.json
     },
     "problemMatcher": []
 }
+```
+
+Press **Alt+Shift+B**, choose Flash from drop-down menu.
+
+![flash-dropdown](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/flash-dropdown.png)
+
+It flash the hex file into the WSTK board
+
+```bash
+> Executing task in folder Z3LightSoc: C:\Users\username\SimplicityStudio\v4_workspace\Z3LightSoc\flash.bat  <
+
+Parsing file c:\Users\username\SimplicityStudio\v4_workspace\Z3LightSoc\build\efr32\binary\Z3LightSoc.hex...
+Writing 262144 bytes starting at address 0x00000000
+Comparing range 0x00000000 - 0x0001FFFF (128 KB)
+Comparing range 0x00020000 - 0x0003FFFF (128 KB)
+Comparing range 0x00000000 - 0x0001FFFF (128 KB)
+Comparing range 0x00020000 - 0x0003FFFF (128 KB)
+DONE
 ```
 
 **Run Commander Tool with GUI**
