@@ -133,7 +133,7 @@ Press **Ctrl+P**, type "Z3LightSoc.mak" and open the Z3LightSoc.mak,
 #### 5.2.1. Configure include path
 Copy all stuffs of **CINC** variable and paste them in "includepath" field of c_cpp_properties.json. And we make some modifications to match the requirement of the JSON file.
 Press **Ctrl+H** to replace  "-I../../../../../SiliconLabs/SimplicityStudio/v4/developer/sdks/gecko_sdk_suite/v2.6" with **"${SDK_PATH}**.
-Select all include path lines, press **Shift+Alt+I** to add cursors at line ends, delete symbol \,  add symbol ". Please check below GIF.
+Select all include path lines, press **Shift+Alt+I** to add cursors at line ends, delete symbol \\,  add symbol ". Please check below GIF.
 
 ![includepath](https://github.com/MarkDing/IoT-Project-Development-in-VS-Code/raw/master/images/includepath.gif)
 
