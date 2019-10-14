@@ -234,7 +234,7 @@ There is a Commander tool in Simplicity Studio to program binary code into the W
 
 **Run Commander Tool in Command Line**
 
-This way works in seamless way with VS Code. It is recommended. 
+This way works in seamless way with VS Code. It is recommended. Thanks for Eric's contribution on this. 
 
 Press **CTRL+N**, open a new file, typing follow text in the file. Save as **flash.bat** under current workspace (C:\Users\username\SimplicityStudio\v4_workspace\Z3LightSoc).
 
